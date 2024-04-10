@@ -45,14 +45,6 @@ func NewUser(p usuarios.Service) *ServiceHandler {
 
 func (c *ServiceHandler) GetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.GetHeader("token")
-		if token != "123456" {
-			// status StatusUnauthorized equivalente ao 401
-			ctx.JSON(http.StatusUnauthorized, gin.H{
-				"error": "token inválido",
-			})
-			return
-		}
 
 		p, err := c.service.GetAll()
 		if err != nil {
@@ -73,11 +65,7 @@ func (c *ServiceHandler) GetAll() gin.HandlerFunc {
 
 func (c *ServiceHandler) Store() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		token := ctx.GetHeader("token")
-		if token != "123456" {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "token inválido"})
-			return
-		}
+
 		var req CreateRequestDto
 		if err := ctx.Bind(&req); err != nil {
 			ctx.JSON(http.StatusUnprocessableEntity, gin.H{
